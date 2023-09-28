@@ -18,7 +18,7 @@ jobs:
       - name: License check
         run: mvn -B --fail-fast license:check
       - name: Test with Maven
-        run: mvn -pl graylog-storage-elasticsearch7 test -Dtest=org.graylog.storage.elasticsearch7.views.ElasticsearchBackendUsingCorrectIndicesTest -Pedantic -Dspotbugs.skip -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3 -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+        run: mvn -pl graylog-storage-elasticsearch7 test -Dtest=org.graylog.storage.elasticsearch7.views.ElasticsearchBackendUsingCorrectIndicesTest
         env:
           JAVA_OPTS: -Xmx6G
           TIMEOUT_MULTIPLIER: 2.0

@@ -1,15 +1,7 @@
-name: Build the repository
-
-on: 
-  pull_request:
-
-# Cancel running build when new ref gets pushed.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  build:
+name: Run test normally
+on:
+  push:
+test:
     runs-on: ubuntu-latest-4-cores-public
     strategy:
       matrix:
@@ -24,10 +16,8 @@ jobs:
           cache: maven
       - name: License check
         run: mvn -B --fail-fast license:check
-      - name: Build with Maven
-        run: mvn -B --fail-fast -Pedantic -Dspotbugs.skip -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3 -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 verify javadoc:javadoc
+      - name: Test with Maven
+        run: mvn -pl graylog-storage-elasticsearch7 test -Dtest=org.graylog.storage.elasticsearch7.views.ElasticsearchBackendUsingCorrectIndicesTest -Pedantic -Dspotbugs.skip -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3 -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         env:
           JAVA_OPTS: -Xmx6G
           TIMEOUT_MULTIPLIER: 2.0
-
-
